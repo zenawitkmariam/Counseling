@@ -23,6 +23,7 @@ namespace StudentCounselling.Controllers
             this._dataBase = dataBase;
         }
 
+
         [HttpGet, Route("GetRoleList/{searchText?}")]
         public IEnumerable<Role> GetRoleList(string searchText)
         {
