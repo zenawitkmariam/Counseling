@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StudentCounselling.Context;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace StudentCounselling.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class HomeController : Controller
