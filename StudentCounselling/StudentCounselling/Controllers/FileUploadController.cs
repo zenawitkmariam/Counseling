@@ -6,10 +6,15 @@ using StudentCounselling.Data;
 using StudentCounselling.Entities;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StudentCounselling.Controllers
 {
@@ -32,7 +37,7 @@ namespace StudentCounselling.Controllers
             //this._fileUploadService = fileUploadService;
         }
         [HttpPut("FileUpload/{userId}")]
-        public async Task<string>  UploadFiles(string userId, IFormFile objectFile)
+        public async Task<string> UploadFiles(string userId, IFormFile objectFile)
         {
             var test = objectFile;
             try
@@ -72,32 +77,35 @@ namespace StudentCounselling.Controllers
                     return "Failed to Upload Image";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ex.Message;
             }
         }
-        [Route("upload")]
-        [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile image)
+        [Route("GetFile/{userId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetFile(string userId)
         {
-            //FurnitureImage item = new FurnitureImage();
-            //if (ModelState.IsValid)
-            //{
-            //    if (image != null && image.Length > 0)
-            //    {
-            //        var fileName = Path.GetFileName(image.FileName);
-            //        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\items", fileName);
-            //        using (var fileSteam = new FileStream(filePath, FileMode.Create))
-            //        {
-            //            await image.CopyToAsync(fileSteam);
-            //        }
-            //        item.PictureInfo = new byte[Convert.ToByte(fileName)];
-            //    }
 
-            //    _furnitureInfoRepository.AddNewFurnitureImage(item);
-            //}
-            return View("item");
+            var user = _dataBase.User.Where(t => t.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.ImageUrl != null)
+                {
+                    string path = _webHostEnvironment.WebRootPath + user.ImageUrl;
+                    var memory = new MemoryStream();
+                    using (var stream = new FileStream(path,FileMode.Open))
+                    { 
+                        await stream.CopyToAsync(memory);
+                    }
+                    memory.Position = 0;
+                    var contentType = "APPLICATIONn/octet-stream";
+                    var fileName = Path.GetFileName(path);
+                    return File(memory, contentType, fileName);
+                }
+                return Ok("User has no image");
+            }
+            return BadRequest(error: "Invalid user id");
         }
     }
 }
