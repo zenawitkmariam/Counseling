@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace StudentCounselling.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class LoginAuthorizationController : Controller
@@ -22,11 +22,11 @@ namespace StudentCounselling.Controllers
             this._dataBase = dataBase;
             this.jwtAuthenticationManager = _JwtAuthenticationManager;
         }
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] UserLogin user)
+        public IActionResult Authenticate([FromBody] User user)
         {
-            var result = this._dataBase.UserLogin.Any(u => u.UserName == user.UserName && u.Password == user.Password);
+            var result = this._dataBase.User.Any(u => u.UserName == user.UserName && u.Password == user.Password);
             if (!result)
             {
                 return null;

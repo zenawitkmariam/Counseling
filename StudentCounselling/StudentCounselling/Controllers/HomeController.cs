@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace StudentCounselling.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class HomeController : Controller

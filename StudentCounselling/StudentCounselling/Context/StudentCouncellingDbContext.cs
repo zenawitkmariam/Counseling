@@ -23,6 +23,5 @@ namespace StudentCounselling.Context
         public DbSet<Role> Role { get; set; }
         public DbSet<Department> Department { get; set; }
         public DbSet<Address> Address { get; set; }
-        public DbSet<UserLogin> UserLogin { get; set; }
     }
 }
