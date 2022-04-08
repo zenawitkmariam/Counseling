@@ -84,7 +84,7 @@ namespace StudentCounselling.Controllers
         }
         [Route("GetFile/{userId}")]
         [HttpGet]
-        public async Task<IActionResult> GetFile(string userId)
+        public async Task<IActionResult> DownloadFile(string userId)
         {
 
             var user = _dataBase.User.Where(t => t.UserId == userId).FirstOrDefault();
